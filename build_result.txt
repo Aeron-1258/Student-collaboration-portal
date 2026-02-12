@@ -1,0 +1,229 @@
+﻿
+> temp-app@0.1.0 build
+> next build
+
+node.exe : ΓÜá 
+`eslint` 
+configuration in 
+next.config.ts is no 
+longer supported. 
+See more info here: h
+ttps://nextjs.org/doc
+s/app/api-reference/c
+li/next#next-lint-opt
+ions
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (ΓÜá `es   
+ lint` co...xt-li    
+nt-options:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+ΓÜá Invalid 
+next.config.ts 
+options detected: 
+ΓÜá     Unrecognized 
+key(s) in object: 
+'eslint'
+ΓÜá See more info 
+here: https://nextjs.
+org/docs/messages/inv
+alid-next-config
+Γû▓ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+Error: Cannot apply 
+unknown utility 
+class `border-border`
+    [2m[at 
+onInvalidCandidate (C
+:\Users\aeron\OneDriv
+e\Desktop\Student  
+Collaboration portal\
+node_modules\tailwind
+css\dist\lib.js:21:15
+11)][0m
+    [2m[at Te (C:\Us
+ers\aeron\OneDrive\De
+sktop\Student  
+Collaboration portal\
+node_modules\tailwind
+css\dist\lib.js:16:36
+652)][0m
+    [2m[at C:\Users\
+aeron\OneDrive\Deskto
+p\Student  
+Collaboration portal\
+node_modules\tailwind
+css\dist\lib.js:21:35
+5][0m
+    [2m[at Rr (C:\Us
+ers\aeron\OneDrive\De
+sktop\Student  
+Collaboration portal\
+node_modules\tailwind
+css\dist\lib.js:3:171
+8)][0m
+    [2m[at _ (C:\Use
+rs\aeron\OneDrive\Des
+ktop\Student  
+Collaboration portal\
+node_modules\tailwind
+css\dist\lib.js:3:137
+7)][0m
+    [2m[at $e (C:\Us
+ers\aeron\OneDrive\De
+sktop\Student  
+Collaboration portal\
+node_modules\tailwind
+css\dist\lib.js:21:17
+2)][0m
+    [2m[at un (C:\Us
+ers\aeron\OneDrive\De
+sktop\Student  
+Collaboration portal\
+node_modules\tailwind
+css\dist\lib.js:38:29
+4)][0m
+    [2m[at async cn 
+(C:\Users\aeron\OneDr
+ive\Desktop\Student  
+Collaboration portal\
+node_modules\tailwind
+css\dist\lib.js:38:63
+1)][0m
+    [2m[at async Xr 
+(C:\Users\aeron\OneDr
+ive\Desktop\Student  
+Collaboration portal\
+node_modules\@tailwin
+dcss\node\dist\index.
+js:10:3417)][0m
+    [2m[at async I (
+C:\Users\aeron\OneDri
+ve\Desktop\Student  
+Collaboration portal\
+node_modules\@tailwin
+dcss\postcss\dist\ind
+ex.js:10:3977)][0m
+
+> Build error 
+occurred
+Error: Turbopack 
+build failed with 1 
+errors:
+./src/app/globals.css
+Error evaluating 
+Node.js code
+CssSyntaxError: 
+tailwindcss: C:\Users
+\aeron\OneDrive\Deskt
+op\Student  
+Collaboration portal\
+src\app\globals.css:1
+:1: Cannot apply 
+unknown utility 
+class `border-border`
+    at Input.error (n
+ode_modules/postcss/l
+ib/input.js:135:16) [
+C:\Users\aeron\OneDri
+ve\Desktop\Student  
+Collaboration portal\
+.next\build\chunks\no
+de_modules_fe693df6._
+.js:4651:22]
+    at Root.error (no
+de_modules/postcss/li
+b/node.js:146:32) [C:
+\Users\aeron\OneDrive
+\Desktop\Student  
+Collaboration portal\
+.next\build\chunks\no
+de_modules_fe693df6._
+.js:928:38]
+    [at Object.Once (
+C:\Users\aeron\OneDri
+ve\Desktop\Student  
+Collaboration portal\
+node_modules\@tailwin
+dcss\postcss\dist\ind
+ex.js:10:6911)]
+    at async 
+LazyResult.runAsync (
+node_modules/postcss/
+lib/lazy-result.js:29
+3:11) [C:\Users\aeron
+\OneDrive\Desktop\Stu
+dent  Collaboration p
+ortal\.next\build\chu
+nks\node_modules_fe69
+3df6._.js:6206:21]
+    at async 
+transform (turbopack:
+///[turbopack-node]/t
+ransforms/postcss.ts:
+70:34) [C:\Users\aero
+n\OneDrive\Desktop\St
+udent  Collaboration 
+portal\.next\build\ch
+unks\[root-of-the-ser
+ver]__51225daf._.js:1
+46:36]
+    at async run (tur
+bopack:///[turbopack-
+node]/ipc/evaluate.ts
+:92:23) [C:\Users\aer
+on\OneDrive\Desktop\S
+tudent  
+Collaboration portal\
+.next\build\chunks\[r
+oot-of-the-server]__9
+74941ed._.js:443:31]
+
+Import trace:
+  Client Component 
+Browser:
+    ./src/app/globals
+.css [Client 
+Component Browser]
+    
+./src/app/layout.tsx 
+[Server Component]
+
+
+    at async 
+transform (turbopack:
+///[turbopack-node]/t
+ransforms/postcss.ts:
+70:34) [C:\Users\aero
+n\OneDrive\Desktop\St
+udent  Collaboration 
+portal\.next\build\ch
+unks\[root-of-the-ser
+ver]__51225daf._.js:1
+46:36])
+    at async run (tur
+bopack:///[turbopack-
+node]/ipc/evaluate.ts
+:92:23) [C:\Users\aer
+on\OneDrive\Desktop\S
+tudent  
+Collaboration portal\
+.next\build\chunks\[r
+oot-of-the-server]__9
+74941ed._.js:443:31])

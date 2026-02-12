@@ -1,0 +1,63 @@
+﻿
+> temp-app@0.1.0 start
+> next start
+
+Γû▓ Next.js 16.1.6
+- Local:         http://localhost:3000
+- Network:       http://192.168.56.1:3000
+
+Γ£ô Starting...
+node.exe : ΓÜá 
+`eslint` 
+configuration in 
+next.config.ts is no 
+longer supported. 
+See more info here: h
+ttps://nextjs.org/doc
+s/app/api-reference/c
+li/next#next-lint-opt
+ions
+At line:1 char:1
++ & "C:\Program Files
+\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (ΓÜá `es   
+ lint` co...xt-li    
+nt-options:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+ΓÜá Invalid 
+next.config.ts 
+options detected: 
+ΓÜá     Unrecognized 
+key(s) in object: 
+'eslint'
+ΓÜá See more info 
+here: https://nextjs.
+org/docs/messages/inv
+alid-next-config
+Error: Could not 
+find a production 
+build in the '.next' 
+directory. Try 
+building your app 
+with 'next build' 
+before starting the 
+production server. ht
+tps://nextjs.org/docs
+/messages/production-
+start-no-build-id
+    at ignore-listed 
+frames

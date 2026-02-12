@@ -1,0 +1,17 @@
+{
+  "users": [
+    {
+      "id": "qr8fhyj",
+      "name": "Aeron Jacob Jose",
+      "email": "aeronjacobjose1@gmail.com",
+      "password": "$2b$10$bn1J7puXO38/JGYULqcEFe4QjoFuhVNxcE/rCSSISRHs4QwkaXUsq",
+      "createdAt": "2026-02-11T16:26:15.461Z",
+      "updatedAt": "2026-02-11T16:26:15.461Z",
+      "projects": [],
+      "requests": []
+    }
+  ],
+  "projects": [],
+  "requests": [],
+  "messages": []
+}
