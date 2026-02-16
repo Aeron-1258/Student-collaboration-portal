@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { signIn } from "next-auth/react"
+// import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -30,21 +30,9 @@ export default function LoginPage() {
         const password = formData.get("password") as string
 
         try {
-            const result = await signIn("credentials", {
-                email,
-                password,
-                redirect: false,
-            })
-
-            if (result?.error) {
-                if (result.error === "CredentialsSignin") {
-                    alert("Invalid email or password")
-                } else {
-                    alert(result.error || "An error occurred during login")
-                }
-            } else {
-                router.push("/dashboard")
-            }
+            alert("Login is currently disabled as NextAuth has been removed.");
+            router.push("/dashboard"); // Auto-redirect for testing since auth is gone
+            router.push("/dashboard"); // Auto-redirect for testing since auth is gone
         } catch (error) {
             console.error(error)
         } finally {

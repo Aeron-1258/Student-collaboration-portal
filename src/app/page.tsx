@@ -3,7 +3,7 @@
 import { useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { useSession } from "next-auth/react"
+// import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle2, Layers, MessageCircle, ShieldCheck } from "lucide-react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
@@ -24,7 +24,8 @@ function Section({ children, className = "" }: { children: React.ReactNode; clas
 }
 
 export default function Home() {
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
+  const session = null; // NextAuth removed
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -63,31 +64,20 @@ export default function Home() {
           viewport={{ once: true }}
         >
           <h2 className="text-xl md:text-2xl font-medium text-gray-500 mb-4 tracking-wide">
-            {session ? `Welcome back, ${session.user?.name}` : "Student Collaboration Portal"}
+            Student Collaboration Portal
           </h2>
           <h1 className="text-[15vw] leading-[0.85] font-bold tracking-tighter text-black mb-8">
-            {session ? "Dashboard" : "Connect"}
+            Connect
           </h1>
           <p className="max-w-2xl mx-auto text-xl md:text-2xl font-medium text-gray-600 mb-10">
-            {session
-              ? "Your network is active. Jump back in to see your latest project updates and messages."
-              : "Discover your most advanced network yet. Blazing fast connections, meaningful projects, superb team matching."
-            }
+            Discover your most advanced network yet. Blazing fast connections, meaningful projects, superb team matching.
           </p>
           <div className="flex gap-4 justify-center mb-16">
-            {session ? (
-              <Link href="/dashboard">
-                <Button size="lg" className="rounded-full h-12 px-8 text-lg bg-blue-600 hover:bg-blue-700 text-white border-0 shadow-lg shadow-blue-200 transition-all hover:scale-105">
-                  Go to Dashboard <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/signup">
-                <Button size="lg" className="rounded-full h-12 px-8 text-lg bg-blue-600 hover:bg-blue-700 text-white border-0 shadow-lg shadow-blue-200 transition-all hover:scale-105">
-                  Join Now <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-            )}
+            <Link href="/signup">
+              <Button size="lg" className="rounded-full h-12 px-8 text-lg bg-blue-600 hover:bg-blue-700 text-white border-0 shadow-lg shadow-blue-200 transition-all hover:scale-105">
+                Join Now <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
 
             <Link href="/projects">
               <Button variant="outline" size="lg" className="rounded-full h-12 px-8 text-lg border-gray-300 hover:bg-gray-100 bg-transparent">

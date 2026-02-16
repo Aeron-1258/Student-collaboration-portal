@@ -1,14 +1,13 @@
 "use client"
 
 import Link from "next/link"
-import { useSession, signOut } from "next-auth/react"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { AvailabilityStatus } from "@/components/AvailabilityStatus"
 import { UserAvatar } from "@/components/UserAvatar"
 
 export function Navbar() {
-    const { data: session } = useSession()
+    const session = null; // NextAuth removed
 
     const pathname = usePathname()
     const isDashboard = pathname?.startsWith("/dashboard") || pathname?.startsWith("/settings") || pathname?.startsWith("/projects")
@@ -56,17 +55,15 @@ export function Navbar() {
 
                             <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
                                 <UserAvatar
-                                    name={session.user?.name}
-                                    image={session.user?.image}
+                                    name="User"
                                     className="w-8 h-8 hidden sm:flex"
                                 />
                                 <span className="text-sm text-slate-600 font-medium hidden sm:block">
-                                    {session.user?.name}
+                                    User
                                 </span>
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() => signOut()}
                                     className="text-slate-500 hover:text-red-600 hover:bg-red-50"
                                 >
                                     Logout

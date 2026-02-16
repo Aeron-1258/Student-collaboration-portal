@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { auth } from "@/auth"
+// import { auth } from "@/auth"
 import dbConnect from "@/lib/db"
 import Project from "@/models/Project"
 import { z } from "zod"
@@ -12,11 +12,14 @@ const projectSchema = z.object({
 
 export async function POST(req: Request) {
     try {
-        const session = await auth()
+        // const session = await auth()
 
-        if (!session?.user) {
-            return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
-        }
+        // if (!session?.user) {
+        //     return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+        // }
+
+        // Mock user for now since we removed auth
+        const session = { user: { id: "mock-user-id" } }
 
         await dbConnect(); // Ensure DB is connected
 

@@ -29,6 +29,7 @@ export default function SignupPage() {
         const email = formData.get("email") as string
         const password = formData.get("password") as string
 
+        /*
         try {
             const response = await fetch("/api/auth/register", {
                 method: "POST",
@@ -57,6 +58,9 @@ export default function SignupPage() {
         } finally {
             setIsLoading(false)
         }
+        */
+        alert("Sign up is currently disabled as NextAuth has been removed.");
+        setIsLoading(false);
     }
 
     return (
