@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const path = require('path');
 
@@ -49,5 +50,8 @@ if (hasDatabaseUrl) {
         });
 
 } else {
-// ...
+    console.warn('⚠️ DATABASE_URL not found in .env.local');
+    console.log('   Please add DATABASE_URL to .env.local');
+    process.exit(1);
+}
 

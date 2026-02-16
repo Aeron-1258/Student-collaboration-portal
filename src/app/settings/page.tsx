@@ -157,7 +157,7 @@ export default function SettingsPage() {
     )
 }
 
-function Plus(props: any) {
+function Plus(props: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     return (
         <svg
             {...props}

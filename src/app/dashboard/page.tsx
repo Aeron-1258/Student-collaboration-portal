@@ -19,6 +19,7 @@ export default async function DashboardPage() {
     }).lean();
 
     // Serialize for client component
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const projects = projectsRaw.map((p: any) => ({
         ...p,
         id: p._id.toString(), // Map _id to id for frontend compatibility

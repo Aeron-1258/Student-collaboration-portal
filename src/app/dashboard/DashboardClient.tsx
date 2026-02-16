@@ -29,7 +29,9 @@ import ProjectNetwork3D from "@/components/ProjectNetwork3D"
 import { UserAvatar } from "@/components/UserAvatar"
 
 interface DashboardClientProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     session: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     projects: any[];
 }
 
@@ -203,7 +205,7 @@ export default function DashboardClient({ session, projects }: DashboardClientPr
                                         <span className="text-[10px] text-slate-400">10m ago</span>
                                     </div>
                                     <p className="text-[11px] text-slate-600 mb-3 line-clamp-2">
-                                        "Hi, I'd love to help with the video editing for your content creation project."
+                                        &quot;Hi, I&apos;d love to help with the video editing for your content creation project.&quot;
                                     </p>
                                     <div className="flex gap-2">
                                         <Button size="sm" className="h-7 text-xs flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Accept</Button>
@@ -284,7 +286,7 @@ export default function DashboardClient({ session, projects }: DashboardClientPr
                                             <span className="font-bold text-xs text-slate-800">{item.user}</span>
                                             <span className="text-[10px] text-slate-400">{item.date}</span>
                                         </div>
-                                        <p className="text-xs text-slate-600 leading-relaxed">"{item.comment}"</p>
+                                        <p className="text-xs text-slate-600 leading-relaxed">&quot;{item.comment}&quot;</p>
                                         <div className="flex gap-0.5 mt-2">
                                             {[...Array(5)].map((_, stars) => (
                                                 <div key={stars} className={`w-1.5 h-1.5 rounded-full ${stars < item.rating ? 'bg-yellow-400' : 'bg-slate-200'}`} />

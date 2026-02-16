@@ -62,7 +62,7 @@ export function HeroDashboard() {
                     <div className="flex justify-between items-center mb-8">
                         <div>
                             <h2 className="text-2xl font-bold text-slate-800 mb-1">Welcome back, Alex!</h2>
-                            <p className="text-slate-500">Here's what's happening with your projects today.</p>
+                            <p className="text-slate-500">Here&apos;s what&apos;s happening with your projects today.</p>
                         </div>
                         <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-lg shadow-blue-200">
                             <Plus className="w-4 h-4" /> New Project
@@ -138,7 +138,7 @@ export function HeroDashboard() {
     )
 }
 
-function Layers(props: any) {
+function Layers(props: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     return (
         <svg
             {...props}

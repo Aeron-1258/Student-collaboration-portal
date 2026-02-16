@@ -166,7 +166,7 @@ export default function ProjectsPage() {
                                 </div>
                                 <h3 className="text-lg font-semibold text-slate-900 mb-1">No projects found</h3>
                                 <p className="text-slate-500 max-w-sm mx-auto">
-                                    We couldn't find any projects matching "{searchQuery}". Try adjusting your search terms.
+                                    We couldn&apos;t find any projects matching &quot;{searchQuery}&quot;. Try adjusting your search terms.
                                 </p>
                             </div>
                         )}

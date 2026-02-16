@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useMemo } from "react"
+import { useRef } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Environment, Float, PerspectiveCamera, Stars } from "@react-three/drei"
 import * as THREE from "three"
@@ -34,46 +34,7 @@ function Node({ position, color }: { position: [number, number, number]; color: 
     )
 }
 
-function ConnectionLines({ count = 10 }: { count?: number }) {
-    const lines = useMemo(() => {
-        return new Array(count).fill(0).map(() => {
-            return {
-                start: [
-                    (Math.random() - 0.5) * 10,
-                    (Math.random() - 0.5) * 10,
-                    (Math.random() - 0.5) * 5,
-                ] as [number, number, number],
-                end: [
-                    (Math.random() - 0.5) * 10,
-                    (Math.random() - 0.5) * 10,
-                    (Math.random() - 0.5) * 5,
-                ] as [number, number, number],
-            }
-        })
-    }, [count])
 
-    // Simple line rendering
-    return (
-        <group>
-            {lines.map((line, i) => (
-                // Use a thin cylinder as a line for visual thickness
-                <mesh key={i} position={[
-                    (line.start[0] + line.end[0]) / 2,
-                    (line.start[1] + line.end[1]) / 2,
-                    (line.start[2] + line.end[2]) / 2
-                ]}
-                    rotation={[
-                        Math.atan2(line.end[1] - line.start[1], line.end[2] - line.start[2]), // Simplified rotation for demo
-                        Math.atan2(line.end[0] - line.start[0], line.end[2] - line.start[2]),
-                        0
-                    ]}
-                >
-                    {/* Detailed line logic would require specialized line components, keeping it simple with floating nodes for now */}
-                </mesh>
-            ))}
-        </group>
-    )
-}
 
 function Scene() {
     const groupRef = useRef<THREE.Group>(null)
