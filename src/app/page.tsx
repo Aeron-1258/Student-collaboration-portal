@@ -7,8 +7,13 @@ import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle2, Layers, MessageCircle, ShieldCheck } from "lucide-react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import { Scene3D } from "@/components/Scene3D"
+import dynamic from "next/dynamic"
 import { HeroDashboard } from "@/components/hero-dashboard"
+
+const Scene3D = dynamic(() => import("@/components/Scene3D").then((mod) => mod.Scene3D), {
+  ssr: false,
+  loading: () => null,
+})
 
 function Section({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (

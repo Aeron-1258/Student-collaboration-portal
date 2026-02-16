@@ -109,7 +109,7 @@ function Scene() {
 export function Scene3D() {
     return (
         <div className="fixed inset-0 z-0 pointer-events-none">
-            <Canvas>
+            <Canvas dpr={[1, 1.5]} gl={{ antialias: false, powerPreference: "high-performance" }}>
                 <PerspectiveCamera makeDefault position={[0, 0, 8]} />
                 <ambientLight intensity={0.5} />
                 <pointLight position={[10, 10, 10]} intensity={1.5} />
@@ -118,8 +118,8 @@ export function Scene3D() {
 
                 <Scene />
 
-                {/* Particles / Stars for depth */}
-                <Stars radius={100} depth={50} count={2000} factor={4} saturation={0} fade speed={1} />
+                {/* Particles / Stars for depth - Reduced count for performance */}
+                <Stars radius={100} depth={50} count={800} factor={4} saturation={0} fade speed={1} />
             </Canvas>
         </div>
     )
