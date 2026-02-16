@@ -6,7 +6,7 @@ import { z } from "zod"
 const registerSchema = z.object({
     name: z.string().min(2),
     email: z.string().email(),
-    password: z.string().min(6),
+    password: z.string().min(4),
 })
 
 export async function POST(req: Request) {
@@ -21,13 +21,17 @@ export async function POST(req: Request) {
             )
         }
 
-        const { name, email, password } = result.data
+        const { name, email: rawEmail, password } = result.data
+        const email = rawEmail.toLowerCase()
+
+        console.log(`Registration attempt for: ${email}`)
 
         const existingUser = await prisma.user.findUnique({
             where: { email },
         })
 
         if (existingUser) {
+            console.log(`Registration failed: User already exists (${email})`)
             return NextResponse.json(
                 { message: "User already exists" },
                 { status: 409 }
@@ -44,17 +48,24 @@ export async function POST(req: Request) {
             },
         })
 
+        console.log(`User created successfully: ${email}`)
+
         // Remove password from response
-        const { password: _, ...userWithoutPassword } = user
+        const userWithoutPassword = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+        }
 
         return NextResponse.json(
             { message: "User created successfully", user: userWithoutPassword },
             { status: 201 }
         )
     } catch (error) {
-        console.error("Registration failed:", error)
+        console.error("Registration failed with error:", error)
+        const message = error instanceof Error ? error.message : "Internal server error"
         return NextResponse.json(
-            { message: "Internal server error" },
+            { message: message },
             { status: 500 }
         )
     }

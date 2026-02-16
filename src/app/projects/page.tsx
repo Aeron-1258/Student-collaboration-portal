@@ -149,8 +149,9 @@ export default function ProjectsPage() {
                                             className="bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-md shadow-blue-200"
                                             onClick={(e) => {
                                                 e.preventDefault()
-                                                e.target.innerText = "Requested"
-                                                e.target.className += " opacity-70 pointer-events-none"
+                                                const button = e.currentTarget as HTMLButtonElement
+                                                button.innerText = "Requested"
+                                                button.className += " opacity-70 pointer-events-none"
                                             }}
                                         >
                                             Request to Join

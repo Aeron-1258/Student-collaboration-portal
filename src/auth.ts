@@ -18,13 +18,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 password: { label: "Password", type: "password" },
             },
             authorize: async (credentials) => {
+                console.log("Authorize attempt for:", credentials?.email)
                 const parsedCredentials = loginSchema.safeParse(credentials)
 
                 if (!parsedCredentials.success) {
+                    console.log("Authorize failed: Invalid input", parsedCredentials.error.format())
                     return null
                 }
 
-                const { email, password } = parsedCredentials.data
+                const { email: rawEmail, password } = parsedCredentials.data
+                const email = rawEmail.toLowerCase()
 
                 const user = await prisma.user.findUnique({
                     where: {
@@ -32,7 +35,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     },
                 })
 
-                if (!user || !user.password) {
+                if (!user) {
+                    console.log("Authorize failed: User not found", email)
+                    return null
+                }
+
+                if (!user.password) {
+                    console.log("Authorize failed: User has no password", email)
                     return null
                 }
 
@@ -42,9 +51,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 )
 
                 if (!isPasswordValid) {
+                    console.log("Authorize failed: Invalid password", email)
                     return null
                 }
 
+                console.log("Authorize successful for:", email)
                 return {
                     id: user.id,
                     email: user.email,

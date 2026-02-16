@@ -39,13 +39,21 @@ export default function SignupPage() {
             })
 
             if (!response.ok) {
-                throw new Error("Registration failed")
+                const data = await response.json()
+                if (response.status === 400 && data.errors?.fieldErrors) {
+                    const fieldErrors = data.errors.fieldErrors
+                    const errorMessages = Object.entries(fieldErrors)
+                        .map(([field, messages]) => `${field}: ${(messages as string[]).join(", ")}`)
+                        .join("\n")
+                    throw new Error(`Validation Error:\n${errorMessages}`)
+                }
+                throw new Error(data.message || "Registration failed")
             }
 
             router.push("/login")
         } catch (error) {
             console.error(error)
-            alert("Registration failed. Please try again.")
+            alert(error instanceof Error ? error.message : "Registration failed. Please try again.")
         } finally {
             setIsLoading(false)
         }
@@ -64,7 +72,14 @@ export default function SignupPage() {
                     <CardContent className="grid gap-4">
                         <div className="grid gap-2">
                             <Label htmlFor="name">Name</Label>
-                            <Input id="name" name="name" placeholder="John Doe" required />
+                            <Input
+                                id="name"
+                                name="name"
+                                placeholder="John Doe"
+                                required
+                                minLength={2}
+                                title="Name must be at least 2 characters"
+                            />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
@@ -78,7 +93,14 @@ export default function SignupPage() {
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" name="password" type="password" required />
+                            <Input
+                                id="password"
+                                name="password"
+                                type="password"
+                                required
+                                minLength={4}
+                                title="Password must be at least 4 characters"
+                            />
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col gap-2">

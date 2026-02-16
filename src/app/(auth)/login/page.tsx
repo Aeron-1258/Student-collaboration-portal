@@ -37,7 +37,11 @@ export default function LoginPage() {
             })
 
             if (result?.error) {
-                alert("Invalid credentials")
+                if (result.error === "CredentialsSignin") {
+                    alert("Invalid email or password")
+                } else {
+                    alert(result.error || "An error occurred during login")
+                }
             } else {
                 router.push("/dashboard")
             }
