@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
-import { prisma } from "@/lib/prisma"
+import dbConnect from "@/lib/db"
+import User from "@/models/User"
 import Credentials from "next-auth/providers/credentials"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
@@ -29,11 +30,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 const { email: rawEmail, password } = parsedCredentials.data
                 const email = rawEmail.toLowerCase()
 
-                const user = await prisma.user.findUnique({
-                    where: {
-                        email: email,
-                    },
-                })
+                await dbConnect(); // Ensure DB is connected
+
+                const user = await User.findOne({ email });
 
                 if (!user) {
                     console.log("Authorize failed: User not found", email)
@@ -57,7 +56,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
                 console.log("Authorize successful for:", email)
                 return {
-                    id: user.id,
+                    id: user._id.toString(),
                     email: user.email,
                     name: user.name,
                 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
+import dbConnect from "@/lib/db"
+import User from "@/models/User"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
 
@@ -11,6 +12,8 @@ const registerSchema = z.object({
 
 export async function POST(req: Request) {
     try {
+        await dbConnect();
+
         const body = await req.json()
         const result = registerSchema.safeParse(body)
 
@@ -26,9 +29,7 @@ export async function POST(req: Request) {
 
         console.log(`Registration attempt for: ${email}`)
 
-        const existingUser = await prisma.user.findUnique({
-            where: { email },
-        })
+        const existingUser = await User.findOne({ email });
 
         if (existingUser) {
             console.log(`Registration failed: User already exists (${email})`)
@@ -40,19 +41,17 @@ export async function POST(req: Request) {
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        const user = await prisma.user.create({
-            data: {
-                name,
-                email,
-                password: hashedPassword,
-            },
+        const user = await User.create({
+            name,
+            email,
+            password: hashedPassword,
         })
 
         console.log(`User created successfully: ${email}`)
 
         // Remove password from response
         const userWithoutPassword = {
-            id: user.id,
+            id: user._id.toString(),
             name: user.name,
             email: user.email,
         }

@@ -1,137 +1,56 @@
-# 🚀 Deployment Checklist
+# 🚀 Deployment Checklist (MongoDB Edition)
 
-Your code is ready to deploy! Follow these steps to get your site live.
+Your code is ready to deploy! Follow these steps to get your site live with MongoDB.
 
 ## ✅ Completed
-- [x] Migrated from SQLite to PostgreSQL
-- [x] Updated Prisma schema
-- [x] Created deployment documentation
+- [x] Migrated to MongoDB (schema & env)
+- [x] Updated documentation
 - [x] Committed changes to Git
 - [x] Pushed to GitHub
 
 ## 📝 Next Steps (Do These Now)
 
-### 1️⃣ Create Neon Database (5 minutes)
+### 1️⃣ Create MongoDB Atlas Account (5 minutes)
 
-1. Open: https://console.neon.tech/
-2. Click **"Sign up"** (use GitHub for easy login)
-3. Click **"Create a project"**
-4. Name: `student-portal`
-5. Region: Choose closest to you
-6. Click **"Create project"**
-7. **COPY the connection string** - looks like:
-   ```
-   postgresql://username:password@ep-xxx-xxx.region.aws.neon.tech/neondb
-   ```
-   ⚠️ **Save this!** You'll need it in the next steps.
+1. Open: https://www.mongodb.com/cloud/atlas
+2. Click **"Try Free"**
+3. Create an account
+4. Create a **Shared Cluster** (Free Tier)
+5. **Create a Database User**:
+   - Go to "Database Access"
+   - Add new user (remember password!)
+6. **Whitelist IP Address**:
+   - Go to "Network Access"
+   - Add IP Address
+   - Select "Allow Access from Anywhere" (0.0.0.0/0)
+7. **Get Connection String**:
+   - Click "Connect" on your cluster
+   - Choose "Drivers"
+   - Copy string (e.g., `mongodb+srv://user:pass@cluster...`)
 
-### 2️⃣ Update Local Environment
-
-1. Open `.env` file in your project
-2. Replace the `DATABASE_URL` line with your Neon connection string:
-   ```env
-   DATABASE_URL="postgresql://your-connection-string-here"
-   AUTH_SECRET="xtWb8c4KqOoftPA1uAsOnb1C4HCzGPRAsfcB3Zrg5HQ="
-   ```
-
-### 3️⃣ Initialize Database
-
-Run this command in your terminal:
-```bash
-npx prisma migrate dev --name init
-```
-
-This creates the database tables in your Neon database.
-
-### 4️⃣ Test Locally (Optional but Recommended)
-
-```bash
-npm run dev
-```
-
-Visit http://localhost:3000 and test:
-- Register a new user
-- Login
-- Create a project
-
-If everything works, proceed to deployment!
-
-### 5️⃣ Deploy to Vercel
+### 2️⃣ Deploy to Vercel
 
 1. Go to: https://vercel.com/new
-2. Click **"Import Git Repository"**
-3. Select your repository: `Student-Project-collaboration-portal`
-4. Click **"Import"**
-5. **IMPORTANT**: Before clicking Deploy, add Environment Variables:
-   - Click **"Environment Variables"**
-   - Add `DATABASE_URL`: Paste your Neon connection string
-   - Add `AUTH_SECRET`: Copy from your `.env` file
-6. Click **"Deploy"**
+2. Import your repository: `Student-Project-collaboration-portal`
+3. **Add Environment Variables**:
+   - `DATABASE_URL`: Paste your Atlas connection string
+   - `AUTH_SECRET`: `xtWb8c4KqOoftPA1uAsOnb1C4HCzGPRAsfcB3Zrg5HQ=`
+4. Click **Deploy**
 
-### 6️⃣ Wait for Deployment (2-3 minutes)
+### 3️⃣ Test Your Live Site! 🎉
 
-Vercel will build and deploy your site. You'll see a progress screen.
+1. Click the deployment URL
+2. Register a new user
+3. Create a project
 
-### 7️⃣ Run Production Migrations
+## ❓ Common Questions
 
-After deployment completes, you need to create the database tables in production.
+**Q: Can I use my local MongoDB Compass database for the live site?**
+A: **No.** Your local database only lives on your computer. Vercel needs a cloud database (like MongoDB Atlas) to access your data from the internet.
 
-**Option A - Quick Method (Recommended)**:
-1. In Vercel dashboard, go to your project
-2. Click **Settings** → **General**
-3. Scroll to **"Build & Development Settings"**
-4. Change **"Build Command"** to:
-   ```bash
-   npx prisma generate && npx prisma migrate deploy && next build
-   ```
-5. Go to **Deployments** tab
-6. Click the **"..."** menu on the latest deployment
-7. Click **"Redeploy"**
+**Q: Do I need to run migrations on production?**
+A: With MongoDB, usually **no**. Prisma + MongoDB works without explicit migration commands (`migrate deploy`). The schema is applied when you generate the client. However, if Vercel build fails, ensure `npx prisma generate` is running (it usually is by default).
 
-**Option B - Using Vercel CLI**:
-```bash
-npm i -g vercel
-vercel login
-vercel link
-npx prisma migrate deploy
-```
+## 🆘 Need Help?
 
-### 8️⃣ Test Your Live Site! 🎉
-
-1. Click the deployment URL Vercel provides
-2. Test the features:
-   - [ ] Register a new user
-   - [ ] Login
-   - [ ] Create a project
-   - [ ] View projects
-   - [ ] Send join requests
-
-## 🎊 Success!
-
-Your site is now live and accessible to anyone!
-
-## 📚 Documentation
-
-- **Quick Start**: See `SETUP.md`
-- **Detailed Guide**: See `DEPLOYMENT.md`
-- **What Changed**: See the walkthrough artifact
-
-## 🆘 Having Issues?
-
-Common problems and solutions:
-
-**"Can't reach database server"**
-- Check that `DATABASE_URL` is set correctly in Vercel
-- Verify your Neon database is active
-
-**"Environment variable not found"**
-- Make sure you added both `DATABASE_URL` and `AUTH_SECRET` in Vercel
-- Redeploy after adding environment variables
-
-**Build fails**
-- Check the build logs in Vercel dashboard
-- Ensure environment variables are set correctly
-
-**Database tables not created**
-- Make sure you ran the migration (Step 7)
-- Check Neon dashboard to see if tables exist
+See `DEPLOYMENT.md` for more details.

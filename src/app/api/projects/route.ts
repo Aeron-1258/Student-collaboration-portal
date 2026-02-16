@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
-import { prisma } from "@/lib/prisma"
+import dbConnect from "@/lib/db"
+import Project from "@/models/Project"
 import { z } from "zod"
 
 const projectSchema = z.object({
@@ -17,6 +18,8 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
         }
 
+        await dbConnect(); // Ensure DB is connected
+
         const body = await req.json()
         const result = projectSchema.safeParse(body)
 
@@ -29,14 +32,12 @@ export async function POST(req: Request) {
 
         const { title, description, requiredSkills } = result.data
 
-        const project = await prisma.project.create({
-            data: {
-                title,
-                description,
-                requiredSkills,
-                ownerId: session.user.id,
-                status: "OPEN",
-            },
+        const project = await Project.create({
+            title,
+            description,
+            requiredSkills,
+            ownerId: session.user.id,
+            status: "OPEN",
         })
 
         return NextResponse.json(project, { status: 201 })
