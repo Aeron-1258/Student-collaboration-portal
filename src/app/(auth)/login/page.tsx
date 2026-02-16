@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState } from "react"
 // import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { auth } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -28,10 +29,16 @@ export default function LoginPage() {
         const formData = new FormData(event.currentTarget)
         const email = formData.get("email") as string
         const password = formData.get("password") as string
+        // Derive a name from email for demo purposes
+        const name = email.split("@")[0];
+        const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
 
         try {
-            alert("Login is currently disabled as NextAuth has been removed.");
-            router.push("/dashboard"); // Auto-redirect for testing since auth is gone
+            // alert("Login is currently disabled as NextAuth has been removed.");
+            auth.login({
+                name: formattedName,
+                email: email
+            });
             router.push("/dashboard"); // Auto-redirect for testing since auth is gone
         } catch (error) {
             console.error(error)

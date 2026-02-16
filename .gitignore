@@ -52,3 +52,6 @@ next-env.d.ts
 # local env
 mongo-data/
 start-db.bat
+
+.vercel
+.env*.local

@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { auth } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -59,7 +60,13 @@ export default function SignupPage() {
             setIsLoading(false)
         }
         */
-        alert("Sign up is currently disabled as NextAuth has been removed.");
+        // alert("Sign up is currently disabled as NextAuth has been removed.");
+        // Simulate successful signup for demo
+        auth.login({
+            name: name,
+            email: email
+        });
+        router.push("/dashboard");
         setIsLoading(false);
     }
 

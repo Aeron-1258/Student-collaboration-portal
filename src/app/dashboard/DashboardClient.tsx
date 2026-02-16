@@ -5,6 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
+import { auth } from "@/lib/auth-client" // Import auth client
+import { useEffect } from "react" // Import useEffect
 import {
     LayoutDashboard,
     FolderKanban,
@@ -36,6 +38,15 @@ interface DashboardClientProps {
 }
 
 export default function DashboardClient({ session, projects }: DashboardClientProps) {
+    // State to hold the user info, initialized with session props but updated from client auth
+    const [user, setUser] = useState(session?.user || { name: "User", email: "", image: undefined });
+
+    useEffect(() => {
+        const clientUser = auth.getUser();
+        if (clientUser) {
+            setUser({ ...user, ...clientUser });
+        }
+    }, [])
 
 
     const stats = [
@@ -78,12 +89,12 @@ export default function DashboardClient({ session, projects }: DashboardClientPr
                             <div className="flex flex-col items-center text-center">
                                 <div className="mb-4">
                                     <UserAvatar
-                                        name={session.user?.name}
-                                        image={session.user?.image}
+                                        name={user?.name}
+                                        image={user?.image}
                                         className="w-24 h-24 text-3xl shadow-lg ring-4 ring-white/50"
                                     />
                                 </div>
-                                <h2 className="text-xl font-bold text-slate-900">{session.user.name}</h2>
+                                <h2 className="text-xl font-bold text-slate-900">{user.name}</h2>
                                 <p className="text-sm text-slate-500 mb-6">Computer Science • Year 3</p>
 
 
