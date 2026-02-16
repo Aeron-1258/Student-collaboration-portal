@@ -1,82 +1,35 @@
-# 🚀 Quick Setup Guide
+# 🚀 Quick Setup Guide (MongoDB Edition)
 
-## Before Deploying to Vercel
+## 1. Install & Run MongoDB
 
-You need to set up a PostgreSQL database first. Follow these steps:
+You need MongoDB running locally.
 
-### 1. Create a Neon Database (Recommended - Free)
+1. **Download & Install MongoDB Compass/Server** if you haven't already.
+2. Open **MongoDB Compass**.
+3. Connect to: `mongodb://localhost:27017`
+4. That's it! (The database `student-portal` will be created automatically when you run the app).
 
-1. Visit: https://console.neon.tech/
-2. Sign up with GitHub
-3. Click "Create a project"
-4. Name it: `student-portal` (or any name you prefer)
-5. Select a region close to you
-6. **Copy the connection string** - it looks like:
-   ```
-   postgresql://username:password@ep-xxx.region.aws.neon.tech/neondb
-   ```
+## 2. Initialize the App
 
-### 2. Update Your Local Environment
+Running this command updates the database client:
 
-1. Open your `.env` file
-2. Replace the `DATABASE_URL` line with your Neon connection string:
-   ```
-   DATABASE_URL="postgresql://username:password@ep-xxx.region.aws.neon.tech/neondb"
-   ```
-3. Keep your existing `AUTH_SECRET`
-
-### 3. Initialize the Database
-
-Run this command to create the database tables:
 ```bash
-npx prisma migrate dev --name init
+npx prisma generate
 ```
 
-### 4. Test Locally
+## 3. Run the App
 
 ```bash
 npm run dev
 ```
 
-Visit http://localhost:3000 and test that everything works.
+Visit http://localhost:3000
 
-### 5. Deploy to Vercel
+## 4. Deploying to Vercel (Production)
 
-```bash
-# Commit your changes
-git add .
-git commit -m "Migrate to PostgreSQL for deployment"
-git push origin main
-```
+For the live website, you cannot use "localhost". You need a cloud MongoDB.
 
-Then:
-1. Go to https://vercel.com/new
-2. Import your GitHub repository
-3. Add these environment variables:
-   - `DATABASE_URL`: Your Neon connection string
-   - `AUTH_SECRET`: Copy from your `.env` file
-4. Click **Deploy**
-
-### 6. Run Migrations on Production
-
-After deployment, you need to create the database tables in production:
-
-Option A - Using Vercel CLI:
-```bash
-vercel env pull .env.production
-npx prisma migrate deploy
-```
-
-Option B - Add to Vercel build command:
-In Vercel dashboard, update build command to:
-```bash
-npx prisma generate && npx prisma migrate deploy && next build
-```
-
-## ✅ Done!
-
-Your site should now be live! Visit the URL Vercel provides.
-
-## 🆘 Need Help?
-
-See `DEPLOYMENT.md` for detailed troubleshooting and alternative database providers.
+1. Create a free account on **MongoDB Atlas**.
+2. Create a Cluster (Free Tier).
+3. Get the connection string (it looks like `mongodb+srv://user:pass@cluster0...`).
+4. In Vercel Environment Variables, set `DATABASE_URL` to this Atlas connection string.
