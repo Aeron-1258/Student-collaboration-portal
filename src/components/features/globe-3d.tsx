@@ -156,7 +156,7 @@ function World() {
     )
 }
 
-export function Globe3D() {
+export default function Globe3D() {
     return (
         <div className="w-full h-full absolute inset-0 bg-black">
             <Canvas camera={{ position: [0, 0, 5.5], fov: 45 }} gl={{ antialias: true, alpha: false }}>

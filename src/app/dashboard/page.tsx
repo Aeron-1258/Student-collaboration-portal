@@ -1,7 +1,3 @@
-// import { auth } from "@/auth"
-// import { redirect } from "next/navigation"
-import dbConnect from "@/lib/db"
-import Project from "@/models/Project"
 import DashboardClient from "./DashboardClient"
 
 export default async function DashboardPage() {
@@ -32,7 +28,24 @@ export default async function DashboardPage() {
     //     updatedAt: p.updatedAt?.toISOString(),
     // }));
 
-    const projects: any[] = []; // Mock projects for build
+    const projects: any[] = [
+        {
+            id: "1",
+            title: "AI Study Group",
+            description: "Collaborative learning for machine learning basics.",
+            status: "OPEN",
+            role: "Owner",
+            createdAt: new Date().toISOString()
+        },
+        {
+            id: "2",
+            title: "EcoTrack App",
+            description: "Mobile app for tracking carbon footprint.",
+            status: "IN_PROGRESS",
+            role: "Member", // Joined project
+            createdAt: new Date(Date.now() - 86400000).toISOString()
+        }
+    ];
 
     return <DashboardClient session={session} projects={projects} />
 }

@@ -1,30 +1,18 @@
 "use client"
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import { auth } from "@/lib/auth-client" // Import auth client
-import { useEffect } from "react" // Import useEffect
+import { auth } from "@/lib/auth-client"
 import {
-    LayoutDashboard,
     FolderKanban,
-    Settings,
     Plus,
-    BarChart3,
     Users,
     Clock,
-    MoreHorizontal,
-    Search,
-    Bell,
     Video,
     MessageSquare,
-    CheckCircle2,
-    XCircle,
-    Calendar,
-    LogOut,
-    ExternalLink
+    CheckCircle2
 } from "lucide-react"
 import { motion } from "framer-motion"
 import ProjectNetwork3D from "@/components/ProjectNetwork3D"
@@ -40,6 +28,20 @@ interface DashboardClientProps {
 export default function DashboardClient({ session, projects }: DashboardClientProps) {
     // State to hold the user info, initialized with session props but updated from client auth
     const [user, setUser] = useState(session?.user || { name: "User", email: "", image: undefined });
+
+    const [requests, setRequests] = useState([
+        { id: 1, name: "John Doe", role: "Video Editor", initials: "JD", bg: "bg-indigo-100", color: "text-indigo-600", message: "Hi, I'd love to help with the video editing for your content creation project.", time: "10m ago" },
+        { id: 2, name: "Alice Smith", role: "UI Designer", initials: "AS", bg: "bg-pink-100", color: "text-pink-600", message: "Portfolio link attached below!", time: "1h ago" }
+    ])
+
+    const handleAccept = (id: number) => {
+        setRequests(prev => prev.filter(r => r.id !== id))
+        // Here you would typically make an API call
+    }
+
+    const handleDecline = (id: number) => {
+        setRequests(prev => prev.filter(r => r.id !== id))
+    }
 
     useEffect(() => {
         const clientUser = auth.getUser();
@@ -170,6 +172,11 @@ export default function DashboardClient({ session, projects }: DashboardClientPr
                                                 <div>
                                                     <h4 className="font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">{project.title}</h4>
                                                     <p className="text-xs text-slate-500 line-clamp-1">{project.description}</p>
+                                                    <div className="flex gap-2 mt-1">
+                                                        <Badge variant="outline" className="text-[10px] h-5 px-1.5 bg-slate-50 border-slate-200 text-slate-600">
+                                                            {project.role || "Member"}
+                                                        </Badge>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <Badge variant={project.status === 'OPEN' ? 'default' : 'secondary'} className="rounded-md">
@@ -198,49 +205,93 @@ export default function DashboardClient({ session, projects }: DashboardClientPr
                                 <h3 className="font-bold text-slate-800 flex items-center gap-2">
                                     <Users className="w-4 h-4 text-blue-500" /> Join Requests
                                 </h3>
-                                <Badge className="bg-blue-100 text-blue-600 hover:bg-blue-200 border-0">2 New</Badge>
+                                {requests.length > 0 && <Badge className="bg-blue-100 text-blue-600 hover:bg-blue-200 border-0">{requests.length} New</Badge>}
                             </div>
 
                             <div className="space-y-3 relative z-10">
-                                <div className="bg-white/60 p-3 rounded-xl border border-slate-100">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
-                                                JD
+                                {requests.length === 0 ? (
+                                    <div className="text-center py-8 opacity-50">
+                                        <CheckCircle2 className="w-8 h-8 mx-auto text-green-500 mb-2" />
+                                        <p className="text-xs text-slate-500">All caught up!</p>
+                                    </div>
+                                ) : (
+                                    requests.map((req) => (
+                                        <div key={req.id} className="bg-white/60 p-3 rounded-xl border border-slate-100">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div className="flex items-center gap-2">
+                                                    <div className={`w-8 h-8 rounded-full ${req.bg} flex items-center justify-center ${req.color} font-bold text-xs`}>
+                                                        {req.initials}
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-xs font-bold text-slate-800">{req.name}</p>
+                                                        <p className="text-[10px] text-slate-500">{req.role}</p>
+                                                    </div>
+                                                </div>
+                                                <span className="text-[10px] text-slate-400">{req.time}</span>
                                             </div>
-                                            <div>
-                                                <p className="text-xs font-bold text-slate-800">John Doe</p>
-                                                <p className="text-[10px] text-slate-500">Video Editor</p>
+                                            <p className="text-[11px] text-slate-600 mb-3 line-clamp-2">
+                                                &quot;{req.message}&quot;
+                                            </p>
+                                            <div className="flex gap-2">
+                                                <Button
+                                                    size="sm"
+                                                    onClick={() => handleAccept(req.id)}
+                                                    className="h-7 text-xs flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                                                >
+                                                    Accept
+                                                </Button>
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    onClick={() => handleDecline(req.id)}
+                                                    className="h-7 text-xs flex-1 border-slate-200 text-slate-500 hover:text-slate-700"
+                                                >
+                                                    Decline
+                                                </Button>
                                             </div>
                                         </div>
-                                        <span className="text-[10px] text-slate-400">10m ago</span>
+                                    ))
+                                )}
+                            </div>
+                        </motion.div>
+
+                        {/* My Applications Widget */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+                            className="bg-white/70 backdrop-blur-xl border border-white/60 p-5 rounded-3xl shadow-sm"
+                        >
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                                    <FolderKanban className="w-4 h-4 text-purple-500" /> My Applications
+                                </h3>
+                            </div>
+
+                            <div className="space-y-3">
+                                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm">
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="font-bold text-xs text-slate-800">EcoTrack App</span>
+                                        <Badge variant="outline" className="bg-yellow-50 text-yellow-600 border-yellow-200 text-[10px] px-1.5 py-0">Pending</Badge>
                                     </div>
-                                    <p className="text-[11px] text-slate-600 mb-3 line-clamp-2">
-                                        &quot;Hi, I&apos;d love to help with the video editing for your content creation project.&quot;
-                                    </p>
-                                    <div className="flex gap-2">
-                                        <Button size="sm" className="h-7 text-xs flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Accept</Button>
-                                        <Button size="sm" variant="outline" className="h-7 text-xs flex-1 border-slate-200 text-slate-500 hover:text-slate-700">Decline</Button>
-                                    </div>
+                                    <p className="text-[10px] text-slate-500">Frontend Developer role</p>
+                                    <p className="text-[10px] text-slate-400 mt-1">Sent 2 days ago</p>
                                 </div>
 
-                                <div className="bg-white/60 p-3 rounded-xl border border-slate-100 opacity-80">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold text-xs">
-                                                AS
-                                            </div>
-                                            <div>
-                                                <p className="text-xs font-bold text-slate-800">Alice Smith</p>
-                                                <p className="text-[10px] text-slate-500">UI Designer</p>
-                                            </div>
-                                        </div>
-                                        <span className="text-[10px] text-slate-400">1h ago</span>
+                                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm opacity-80">
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="font-bold text-xs text-slate-800">AI Study Group</span>
+                                        <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200 text-[10px] px-1.5 py-0">Accepted</Badge>
                                     </div>
-                                    <div className="flex gap-2 mt-2">
-                                        <Button size="sm" className="h-7 text-xs flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Accept</Button>
-                                        <Button size="sm" variant="outline" className="h-7 text-xs flex-1 border-slate-200 text-slate-500 hover:text-slate-700">Decline</Button>
+                                    <p className="text-[10px] text-slate-500">ML Engineer role</p>
+                                    <p className="text-[10px] text-slate-400 mt-1">Joined yesterday</p>
+                                </div>
+
+                                <div className="p-3 bg-white rounded-xl border border-slate-100 shadow-sm opacity-60">
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className="font-bold text-xs text-slate-800">Crypto Trader</span>
+                                        <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-[10px] px-1.5 py-0">Rejected</Badge>
                                     </div>
+                                    <p className="text-[10px] text-slate-500">Blockchain Dev role</p>
+                                    <p className="text-[10px] text-slate-400 mt-1">Updated 3 days ago</p>
                                 </div>
                             </div>
                         </motion.div>

@@ -17,40 +17,40 @@ export function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false)
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+    useEffect(() => {
+        // Check initial auth state
+        setIsLoggedIn(auth.isAuthenticated())
+        const user = auth.getUser()
+        if (user) setUserName(user.name)
+
+        // Subscribe to auth changes
+        const unsubscribe = auth.onChange(() => {
+            setIsLoggedIn(auth.isAuthenticated())
+            const updatedUser = auth.getUser()
+            if (updatedUser) setUserName(updatedUser.name)
+        })
+
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20)
+        }
+        window.addEventListener("scroll", handleScroll)
+
+        return () => {
+            unsubscribe()
+            window.removeEventListener("scroll", handleScroll)
+        }
+    }, [])
+
     // Hide Navbar on Auth Pages to prevent overlap
     if (pathname === "/login" || pathname === "/signup") {
         return null
     }
 
-    useEffect(() => {
-        const checkAuth = () => {
-            setIsLoggedIn(auth.isAuthenticated());
-            const user = auth.getUser();
-            if (user) {
-                setUserName(user.name);
-            }
-        }
-        checkAuth();
-        const unsubscribe = auth.onChange(checkAuth);
-        return () => unsubscribe()
-    }, [])
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20)
-        }
-        window.addEventListener("scroll", handleScroll)
-        return () => window.removeEventListener("scroll", handleScroll)
-    }, [])
-
     const isDashboard = pathname?.startsWith("/dashboard") || pathname?.startsWith("/settings") || pathname?.startsWith("/projects") || pathname?.startsWith("/calendar") || pathname?.startsWith("/messages")
 
     return (
         <header
-            className={`fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300 rounded-full border ${isScrolled
-                    ? "bg-black/50 backdrop-blur-md border-white/10 shadow-lg py-2"
-                    : "bg-transparent border-transparent py-4"
-                }`}
+            className={`fixed top-4 left-0 w-full z-[100] transition-all duration-300 py-4 ${isScrolled ? "bg-black/60 backdrop-blur-md" : "bg-transparent"}`}
         >
             <div className="container flex items-center justify-between px-6 mx-auto">
                 {/* Logo */}
@@ -65,32 +65,21 @@ export function Navbar() {
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-1">
-                    {isLoggedIn && isDashboard ? (
+                    {isLoggedIn ? (
                         <>
                             <NavLink href="/dashboard" active={pathname === '/dashboard'}>Overview</NavLink>
                             <NavLink href="/projects" active={pathname?.startsWith('/projects')}>Projects</NavLink>
+                            <NavLink href="/messages" active={pathname?.startsWith('/messages')}>Messages</NavLink>
                             <NavLink href="/calendar" active={pathname === '/calendar'}>Calendar</NavLink>
-                            <NavLink href="/messages" active={pathname === '/messages'}>Messages</NavLink>
+                            <NavLink href="/settings" active={pathname === '/settings'}>Settings</NavLink>
                         </>
-                    ) : (
-                        <>
-                            <NavLink href="/mentors" icon={<Users className="w-4 h-4 mr-1" />}>Mentors</NavLink>
-                            <NavLink href="/projects" icon={<Globe className="w-4 h-4 mr-1" />}>Explore</NavLink>
-                            <NavLink href="/community" icon={<BookOpen className="w-4 h-4 mr-1" />}>Community</NavLink>
-                        </>
-                    )}
+                    ) : null}
                 </nav>
 
                 {/* Right Side Actions */}
                 <div className="flex items-center gap-4">
                     {isLoggedIn ? (
                         <>
-                            {!isDashboard && (
-                                <Link href="/dashboard" className="hidden lg:block text-sm font-medium text-slate-300 hover:text-white transition-colors">
-                                    Dashboard
-                                </Link>
-                            )}
-
                             <div className="flex items-center gap-3 pl-4 border-l border-white/10">
                                 <UserAvatar
                                     name={userName}
@@ -115,7 +104,7 @@ export function Navbar() {
                         </>
                     ) : (
                         <div className="flex items-center gap-3">
-                            <Link href="/login" className="hidden sm:block text-sm font-medium text-slate-300 hover:text-white transition-colors">
+                            <Link href="/login" className="hidden sm:block text-sm font-semibold text-white hover:text-indigo-400 transition-colors mr-2">
                                 Sign In
                             </Link>
                             <Link href="/signup">
@@ -141,14 +130,14 @@ export function Navbar() {
                 <div className="absolute top-full left-0 w-full mt-2 p-4 bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl md:hidden flex flex-col gap-2">
                     {isLoggedIn ? (
                         <>
-                            <MobileLink href="/dashboard">Dashboard</MobileLink>
+                            <MobileLink href="/dashboard">Overview</MobileLink>
                             <MobileLink href="/projects">Projects</MobileLink>
                             <MobileLink href="/messages">Messages</MobileLink>
+                            <MobileLink href="/calendar">Calendar</MobileLink>
+                            <MobileLink href="/settings">Settings</MobileLink>
                         </>
                     ) : (
                         <>
-                            <MobileLink href="/mentors">Mentors</MobileLink>
-                            <MobileLink href="/projects">Explore</MobileLink>
                             <MobileLink href="/login">Sign In</MobileLink>
                             <MobileLink href="/signup">Get Started</MobileLink>
                         </>
@@ -167,7 +156,7 @@ function NavLink({ href, active, children, icon }: { href: string, active?: bool
                 flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
                 ${active
                     ? 'bg-white/10 text-white shadow-inner'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    : 'text-slate-200 hover:text-white hover:bg-white/5'
                 }
             `}
         >

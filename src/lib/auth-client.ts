@@ -1,21 +1,55 @@
 "use client"
 
 const AUTH_KEY = "isLoggedIn";
-const USER_KEY = "user_data"; // New key for user info
+const USER_KEY = "user_data";
+const USERS_DB_KEY = "registered_users"; // Mock DB
 
 export type User = {
     name: string;
     email: string;
+    password?: string;
 }
 
 export const auth = {
-    login: (user?: User) => {
+    signup: (user: User) => {
         if (typeof window !== "undefined") {
-            localStorage.setItem(AUTH_KEY, "true");
-            if (user) {
-                localStorage.setItem(USER_KEY, JSON.stringify(user));
+            // Save to mock DB
+            const users = JSON.parse(localStorage.getItem(USERS_DB_KEY) || "[]");
+            // Check if exists
+            const existingIndex = users.findIndex((u: User) => u.email === user.email);
+            if (existingIndex >= 0) {
+                users[existingIndex] = user; // Update
+            } else {
+                users.push(user);
             }
-            // Dispatch a custom event to notify components of auth change
+            localStorage.setItem(USERS_DB_KEY, JSON.stringify(users));
+
+            // Login
+            auth.login(user);
+        }
+    },
+    login: (credentials: { email: string, password?: string, name?: string }) => {
+        if (typeof window !== "undefined") {
+            let userToLogin = credentials;
+
+            // If name not provided, try to find in DB
+            if (!credentials.name) {
+                const users = JSON.parse(localStorage.getItem(USERS_DB_KEY) || "[]");
+                const found = users.find((u: User) => u.email === credentials.email);
+                if (found) {
+                    userToLogin = found;
+                } else {
+                    // Fallback: Use email as name if not found (better than "User")
+                    userToLogin = {
+                        ...credentials,
+                        name: credentials.email.split("@")[0]
+                    };
+                }
+            }
+
+            localStorage.setItem(AUTH_KEY, "true");
+            localStorage.setItem(USER_KEY, JSON.stringify(userToLogin));
+
             window.dispatchEvent(new Event("auth-change"));
         }
     },
@@ -42,7 +76,6 @@ export const auth = {
     onChange: (callback: () => void) => {
         if (typeof window !== "undefined") {
             window.addEventListener("auth-change", callback);
-            // Also listen for storage events (e.g. tabs)
             window.addEventListener("storage", callback);
             return () => {
                 window.removeEventListener("auth-change", callback);

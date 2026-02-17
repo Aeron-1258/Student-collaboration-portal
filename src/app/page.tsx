@@ -11,7 +11,7 @@ import dynamic from "next/dynamic"
 import { AnimatedHeroDashboard } from "@/components/animated-hero-dashboard"
 import { MatchingAnim } from "@/components/features/matching-anim"
 
-const Globe3D = dynamic(() => import("@/components/features/globe-3d").then((mod) => mod.Globe3D), {
+const Globe3D = dynamic(() => import("@/components/features/globe-3d"), {
   ssr: false,
   loading: () => null,
 })
