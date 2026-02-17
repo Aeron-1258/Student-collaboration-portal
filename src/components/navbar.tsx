@@ -155,8 +155,8 @@ function NavLink({ href, active, children, icon }: { href: string, active?: bool
             className={`
                 flex items-center px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
                 ${active
-                    ? 'bg-white/10 text-white shadow-inner'
-                    : 'text-slate-200 hover:text-white hover:bg-white/5'
+                    ? 'bg-white/10 text-black shadow-inner'
+                    : 'text-black hover:text-black/80 hover:bg-white/5'
                 }
             `}
         >
@@ -170,7 +170,7 @@ function MobileLink({ href, children }: { href: string, children: React.ReactNod
     return (
         <Link
             href={href}
-            className="block w-full px-4 py-3 text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors"
+            className="block w-full px-4 py-3 text-black hover:text-black/80 hover:bg-white/5 rounded-xl transition-colors"
         >
             {children}
         </Link>
