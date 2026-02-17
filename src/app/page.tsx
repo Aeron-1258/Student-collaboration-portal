@@ -8,7 +8,13 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle2, Layers, MessageCircle, ShieldCheck } from "lucide-react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import dynamic from "next/dynamic"
-import { HeroDashboard } from "@/components/hero-dashboard"
+import { AnimatedHeroDashboard } from "@/components/animated-hero-dashboard"
+import { MatchingAnim } from "@/components/features/matching-anim"
+
+const Globe3D = dynamic(() => import("@/components/features/globe-3d").then((mod) => mod.Globe3D), {
+  ssr: false,
+  loading: () => null,
+})
 
 const Scene3D = dynamic(() => import("@/components/Scene3D").then((mod) => mod.Scene3D), {
   ssr: false,
@@ -87,15 +93,9 @@ export default function Home() {
           </div>
 
           {/* Hero Image */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="relative mx-auto max-w-5xl rounded-xl shadow-2xl overflow-hidden border border-white/20 bg-white"
-          >
-            <HeroDashboard />
-          </motion.div>
+          <div className="relative mx-auto max-w-5xl">
+            <AnimatedHeroDashboard />
+          </div>
         </motion.div>
       </Section>
 
@@ -167,37 +167,76 @@ export default function Home() {
       </Section>
 
       {/* Section 3: Achieve */}
-      <Section className="items-end text-right">
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: false, margin: "-100px" }}
-          className="max-w-3xl"
-        >
-          <h3 className="text-lg font-semibold text-gray-500 mb-2">Outstanding</h3>
-          <h2 className="text-[10vw] leading-none font-bold text-black mb-6">
-            Achieve
-          </h2>
-          <h2 className="text-[10vw] leading-none font-bold text-indigo-600 mb-12 -mt-8 opacity-80">
-            Success
-          </h2>
-          <p className="text-xl md:text-2xl text-gray-700 leading-relaxed ml-auto max-w-xl">
-            Perfect for content creators looking to take their creativity to the next level. Featuring high-speed matching and lightning-fast collaboration tools.
-          </p>
+      <Section className="items-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center w-full">
+          {/* Animation on Left */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: false, margin: "-100px" }}
+            className="order-2 md:order-1 relative"
+          >
+            <MatchingAnim />
+            {/* Decorative blob behind */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-indigo-500/10 blur-3xl rounded-full -z-10" />
+          </motion.div>
 
-          <div className="mt-12 flex justify-end gap-6">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-6 h-6 text-black" />
-              <span className="font-semibold text-lg">Instant Matching</span>
+          {/* Text on Right */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: false, margin: "-100px" }}
+            className="max-w-2xl text-right md:text-left order-1 md:order-2 ml-auto md:ml-0"
+          >
+            <h3 className="text-lg font-semibold text-gray-500 mb-2">Outstanding</h3>
+            <h2 className="text-[10vw] md:text-[6vw] leading-none font-bold text-black mb-2">
+              Achieve
+            </h2>
+            <h2 className="text-[10vw] md:text-[6vw] leading-none font-bold text-indigo-600 mb-8 opacity-80">
+              Success
+            </h2>
+            <p className="text-xl text-gray-700 leading-relaxed mb-8">
+              Perfect for content creators looking to take their creativity to the next level. Featuring high-speed matching and lightning-fast collaboration tools.
+            </p>
+
+            <div className="mt-12 flex justify-end gap-6">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-6 h-6 text-black" />
+                <span className="font-semibold text-lg">Instant Matching</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-6 h-6 text-black" />
+                <span className="font-semibold text-lg">Secure Data</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-6 h-6 text-black" />
-              <span className="font-semibold text-lg">Secure Data</span>
-            </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </Section>
+
+      {/* Section 4: Global Network (3D) */}
+      <section className="relative h-screen w-full overflow-hidden bg-black text-white flex flex-col items-center justify-center">
+        <div className="absolute inset-0 z-0">
+          <Globe3D />
+        </div>
+
+        <div className="relative z-10 text-center px-4 pointer-events-none">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-7xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+              Join the Global Network
+            </h2>
+            <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10">
+              Connect with thousands of innovators across the world in a living, breathing ecosystem of talent.
+            </p>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Footer CTA */}
       <section className="py-32 bg-black text-white text-center relative z-10">
@@ -210,6 +249,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-    </main>
+    </main >
   )
 }
